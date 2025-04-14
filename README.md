@@ -1,123 +1,144 @@
 
 # 🏦 Simple Banking Application - Spring Boot REST API
 
-A **Spring Boot RESTful application** that simulates basic banking operations such as account creation, deposit, withdrawal, and balance inquiry using **Java 17**, **Spring Boot**, and **Spring Data JPA**.
+![Java](https://img.shields.io/badge/Java-17-blueviolet)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.1-green)
+![Status](https://img.shields.io/badge/Project-Active-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-blue)
+
+A modern and minimalistic Spring Boot application that simulates basic banking operations using a RESTful architecture. Perform account creation, deposit/withdraw transactions, and view balances via API calls.
 
 ---
 
-## 📂 Project Structure
+## 📁 Project Structure
 
 ```
-├── controller/
+SimpleBankingApplication/
+├── controller/        # Handles API requests
 │   └── AccountController.java
-├── dto/
-│   └── AccountDto.java
-├── entity/
-│   └── Account.java
-├── mapper/
-│   └── AccountMapper.java
-├── repository/
-│   └── AccountRepository.java
-├── service/
+├── service/           # Contains business logic
 │   ├── AccountService.java
 │   └── AccountServiceImpl.java
+├── repository/        # Spring Data JPA interfaces
+│   └── AccountRepository.java
+├── entity/            # JPA entity classes
+│   └── Account.java
+├── dto/               # Data Transfer Objects
+│   └── AccountDto.java
+├── mapper/            # DTO <-> Entity mapper
+│   └── AccountMapper.java
 ├── BankingApplication.java
 └── application.properties
 ```
 
 ---
 
-## ✅ Features
+## 🚀 Features
 
-- Create new bank account
-- View account details
-- Deposit money into account
-- Withdraw money with validation
-- View all existing accounts
-- Delete account by ID
-
----
-
-## 🧱 Tech Stack
-
-- **Java 17**
-- **Spring Boot 3.1**
-- **Spring Data JPA**
-- **H2 / MySQL Database**
-- **RESTful APIs**
+- 🧾 **Account Management**: Create, view, and delete accounts
+- 💰 **Deposit Funds**: Add money to an account
+- 🏦 **Withdraw Funds**: Safely withdraw from an account with validation
+- 📊 **Balance Overview**: View balances and all accounts in the system
+- ⚙️ **Layered Architecture**: Clean separation of concerns
 
 ---
 
-## 🛠️ Setup Instructions
-
-1. **Clone the repository**  
-   ```bash
-   git clone https://github.com/yourusername/SimpleBankingApplication.git
-   cd SimpleBankingApplication
-   ```
-
-2. **Run the application using Maven**
-   ```bash
-   mvn spring-boot:run
-   ```
-
-3. **Access the API endpoints**
-   - Base URL: `http://localhost:8080/api/accounts`
-
----
-
-## 📡 API Endpoints
-
-| Method | Endpoint                        | Description              |
-|--------|----------------------------------|--------------------------|
-| POST   | `/api/accounts`                 | Create a new account     |
-| GET    | `/api/accounts/{id}`           | Get account by ID        |
-| PUT    | `/api/accounts/{id}/deposite`  | Deposit funds            |
-| PUT    | `/api/accounts/{id}/withdraw`  | Withdraw funds           |
-| GET    | `/api/accounts`                | View all accounts        |
-| DELETE | `/api/accounts/{id}`           | Delete account by ID     |
-
----
-
-## 🗂️ Application Flow
+## 🧱 System Architecture
 
 ```mermaid
 flowchart TD
-    A[Client (Postman/Frontend)] --> B[Controller Layer]
+    A[Client (Postman/React)] --> B[Controller Layer]
     B --> C[Service Layer]
     C --> D[Repository Layer]
-    D --> E[Database]
+    D --> E[H2 / MySQL Database]
+
+    style A fill:#f9f,stroke:#333,stroke-width:1px
+    style B fill:#bbf,stroke:#333,stroke-width:1px
+    style C fill:#bdf,stroke:#333,stroke-width:1px
+    style D fill:#dfb,stroke:#333,stroke-width:1px
+    style E fill:#fbb,stroke:#333,stroke-width:1px
 ```
 
 ---
 
-## 🧪 Sample Request (Using cURL)
+## 🔗 REST API Endpoints
 
-**Create Account**
+| Method | Endpoint                        | Description               |
+|--------|----------------------------------|---------------------------|
+| POST   | `/api/accounts`                 | Create new account        |
+| GET    | `/api/accounts/{id}`           | Get account details       |
+| PUT    | `/api/accounts/{id}/deposite`  | Deposit to account        |
+| PUT    | `/api/accounts/{id}/withdraw`  | Withdraw from account     |
+| GET    | `/api/accounts`                | List all accounts         |
+| DELETE | `/api/accounts/{id}`           | Delete account by ID      |
+
+---
+
+## 🧪 Sample Curl Requests
+
+**➕ Create an Account**
 ```bash
-curl -X POST http://localhost:8080/api/accounts -H "Content-Type: application/json" -d '{"accountHolderName":"Alice", "balance":5000}'
+curl -X POST http://localhost:8080/api/accounts -H "Content-Type: application/json" -d '{"accountHolderName":"John Doe", "balance":1000}'
 ```
 
-**Deposit**
+**💰 Deposit Money**
 ```bash
-curl -X PUT http://localhost:8080/api/accounts/1/deposite -H "Content-Type: application/json" -d '{"amount":1000}'
+curl -X PUT http://localhost:8080/api/accounts/1/deposite -H "Content-Type: application/json" -d '{"amount":500}'
 ```
 
-**Withdraw**
+**💸 Withdraw Money**
 ```bash
-curl -X PUT http://localhost:8080/api/accounts/1/withdraw -H "Content-Type: application/json" -d '{"amount":500}'
+curl -X PUT http://localhost:8080/api/accounts/1/withdraw -H "Content-Type: application/json" -d '{"amount":200}'
 ```
+
+---
+
+## 🗃 Database Schema (ER Diagram)
+
+```mermaid
+erDiagram
+    ACCOUNTS {
+        long id PK
+        string accountHolderName
+        double balance
+    }
+```
+
+---
+
+## 🛠 Getting Started
+
+### Prerequisites
+- Java 17+
+- Maven 3.6+
+- (Optional) MySQL or use H2 for in-memory testing
+
+### Run the App
+
+```bash
+git clone https://github.com/yourusername/SimpleBankingApplication.git
+cd SimpleBankingApplication
+mvn spring-boot:run
+```
+
+API runs at: `http://localhost:8080/api/accounts`
 
 ---
 
 ## 📌 Notes
 
-- Built with clean layered architecture using Spring Boot.
-- Designed for learning purposes and can be extended to full banking apps.
-- `RuntimeException` is used for simplicity — in production, use custom exception handling.
+- Uses DTOs for data safety and clean API contract.
+- Auto-incremented ID using `GenerationType.IDENTITY`.
+- Designed with service abstraction for scalability.
+- Exception handling uses basic `RuntimeException` for now.
 
 ---
 
 ## 👨‍💻 Author
 
-**Abhijeet Tilekar** — [GitHub](https://github.com/yourusername)
+**Abhijeet Tilekar**  
+🔗 [GitHub Profile](https://github.com/yourusername)
+
+---
+
+> 💡 *“Code like you mean it. Bank like it matters.”*
