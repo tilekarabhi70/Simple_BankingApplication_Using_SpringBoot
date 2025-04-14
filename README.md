@@ -1,138 +1,123 @@
-# 🏦 Banking Application - Spring Boot REST API
 
-![Java](https://img.shields.io/badge/Java-17+-orange)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.1-green)
-![License](https://img.shields.io/badge/License-MIT-blue)
+# 🏦 Simple Banking Application - Spring Boot REST API
 
-A modern banking application built with Spring Boot that provides RESTful APIs for account management with deposit/withdrawal capabilities.
+A **Spring Boot RESTful application** that simulates basic banking operations such as account creation, deposit, withdrawal, and balance inquiry using **Java 17**, **Spring Boot**, and **Spring Data JPA**.
 
-## 📋 Table of Contents
-- [Features](#-features)
-- [Architecture](#-architecture)
-- [API Documentation](#-api-documentation)
-- [Getting Started](#-getting-started)
-- [Database Schema](#-database-schema)
-- [Development](#-development)
-- [Contributing](#-contributing)
+---
 
-## ✨ Features
+## 📂 Project Structure
 
-- **Account Management**
-  - Create new accounts
-  - View account details
-  - Delete accounts
-- **Transaction Operations**
-  - Deposit funds
-  - Withdraw funds (with balance validation)
-- **Reporting**
-  - List all accounts
-  - View account balances
+```
+├── controller/
+│   └── AccountController.java
+├── dto/
+│   └── AccountDto.java
+├── entity/
+│   └── Account.java
+├── mapper/
+│   └── AccountMapper.java
+├── repository/
+│   └── AccountRepository.java
+├── service/
+│   ├── AccountService.java
+│   └── AccountServiceImpl.java
+├── BankingApplication.java
+└── application.properties
+```
 
-## � Architecture
+---
+
+## ✅ Features
+
+- Create new bank account
+- View account details
+- Deposit money into account
+- Withdraw money with validation
+- View all existing accounts
+- Delete account by ID
+
+---
+
+## 🧱 Tech Stack
+
+- **Java 17**
+- **Spring Boot 3.1**
+- **Spring Data JPA**
+- **H2 / MySQL Database**
+- **RESTful APIs**
+
+---
+
+## 🛠️ Setup Instructions
+
+1. **Clone the repository**  
+   ```bash
+   git clone https://github.com/yourusername/SimpleBankingApplication.git
+   cd SimpleBankingApplication
+   ```
+
+2. **Run the application using Maven**
+   ```bash
+   mvn spring-boot:run
+   ```
+
+3. **Access the API endpoints**
+   - Base URL: `http://localhost:8080/api/accounts`
+
+---
+
+## 📡 API Endpoints
+
+| Method | Endpoint                        | Description              |
+|--------|----------------------------------|--------------------------|
+| POST   | `/api/accounts`                 | Create a new account     |
+| GET    | `/api/accounts/{id}`           | Get account by ID        |
+| PUT    | `/api/accounts/{id}/deposite`  | Deposit funds            |
+| PUT    | `/api/accounts/{id}/withdraw`  | Withdraw funds           |
+| GET    | `/api/accounts`                | View all accounts        |
+| DELETE | `/api/accounts/{id}`           | Delete account by ID     |
+
+---
+
+## 🗂️ Application Flow
 
 ```mermaid
-graph TD
-    A[Client] --> B[Controller]
-    B --> C[Service]
-    C --> D[Repository]
+flowchart TD
+    A[Client (Postman/Frontend)] --> B[Controller Layer]
+    B --> C[Service Layer]
+    C --> D[Repository Layer]
     D --> E[Database]
-    
-    style A fill:#f9f,stroke:#333
-    style B fill:#bbf,stroke:#333
-    style C fill:#bdf,stroke:#333
-    style D fill:#dfb,stroke:#333
-    style E fill:#fbb,stroke:#333
-Layered Architecture:
+```
 
-Controller Layer: Handles HTTP requests/responses
+---
 
-Service Layer: Contains business logic
+## 🧪 Sample Request (Using cURL)
 
-Repository Layer: Manages database operations
+**Create Account**
+```bash
+curl -X POST http://localhost:8080/api/accounts -H "Content-Type: application/json" -d '{"accountHolderName":"Alice", "balance":5000}'
+```
 
-Entity Layer: Maps to database tables
+**Deposit**
+```bash
+curl -X PUT http://localhost:8080/api/accounts/1/deposite -H "Content-Type: application/json" -d '{"amount":1000}'
+```
 
-📚 API Documentation
-Endpoints Overview
-Method	Endpoint	Description	Status Codes
-POST	/api/accounts	Create new account	201, 400
-GET	/api/accounts/{id}	Get account details	200, 404
-PUT	/api/accounts/{id}/deposit	Deposit money	200, 404
-PUT	/api/accounts/{id}/withdraw	Withdraw money	200, 400, 404
-GET	/api/accounts	List all accounts	200
-DELETE	/api/accounts/{id}	Delete account	200, 404
-Example Requests
-Create Account:
+**Withdraw**
+```bash
+curl -X PUT http://localhost:8080/api/accounts/1/withdraw -H "Content-Type: application/json" -d '{"amount":500}'
+```
 
-bash
-Copy
-curl -X POST http://localhost:8080/api/accounts \
--H "Content-Type: application/json" \
--d '{"accountHolderName":"John Smith","balance":5000}'
-Deposit Money:
+---
 
-bash
-Copy
-curl -X PUT http://localhost:8080/api/accounts/1/deposit \
--H "Content-Type: application/json" \
--d '{"amount":1000}'
-🚀 Getting Started
-Prerequisites
-Java 17+
+## 📌 Notes
 
-Maven 3.6+
+- Built with clean layered architecture using Spring Boot.
+- Designed for learning purposes and can be extended to full banking apps.
+- `RuntimeException` is used for simplicity — in production, use custom exception handling.
 
-(Optional) Docker for containerization
+---
 
-Installation
-Clone the repository:
+## 👨‍💻 Author
 
-bash
-Copy
-git clone https://github.com/yourusername/banking-app.git
-cd banking-app
-Build and run:
-
-bash
-Copy
-mvn spring-boot:run
-Access the API at:
-
-Copy
-http://localhost:8080/api/accounts
-🗃 Database Schema
-mermaid
-Copy
-erDiagram
-    ACCOUNTS {
-        long id PK
-        string accountHolderName
-        double balance
-    }
-Table Structure:
-
-accounts table stores all account information
-
-Auto-incremented primary key
-
-Balance stored as double precision
-
-🛠 Development
-Project Structure
-Copy
-banking-app/
-├── src/
-│   ├── main/
-│   │   ├── java/com/banking/
-│   │   │   ├── config/       # Configuration classes
-│   │   │   ├── controller/   # REST controllers
-│   │   │   ├── dto/          # Data Transfer Objects
-│   │   │   ├── entity/       # JPA entities
-│   │   │   ├── exception/    # Custom exceptions
-│   │   │   ├── repository/   # Data repositories
-│   │   │   ├── service/      # Business logic
-│   │   │   └── BankingApplication.java
-│   │   └── resources/       # Config files
-│   └── test/                # Test cases
-├── pom.xml                  # Maven config
-└── README.md                # This file
+**Abhijeet Tilekar** — [GitHub](https://github.com/yourusername)
